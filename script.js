@@ -1,0 +1,26 @@
+'use strict';
+// 第一個工作表（gid=0）：A～E 展示資料，L 為設定名稱，M 為設定內容。
+const SHEET_ID='1bwftr2QthC008_3SoUrCADGEFwtyfSeD3avWS5LQj4Y';
+const SHEET_GID='0';
+const DEFAULT_HEADERS=['存鑽老闆','存鑽數量','存歌數量','存爆數量','總數'];
+const DEFAULT_TITLE='杏子の存鑽與存歌';
+const DEFAULT_SUBTITLE='甜甜收藏，每一筆都值得紀錄 ♡';
+let headers=[...DEFAULT_HEADERS],records=[];
+const $=selector=>document.querySelector(selector);
+const formatter=new Intl.NumberFormat('zh-Hant-TW');
+const normalize=v=>String(v??'').trim().toLocaleLowerCase();
+function parseCSV(s){const out=[];let row=[],cell='',quoted=false;for(let i=0;i<s.length;i++){const c=s[i];if(c==='"'){if(quoted&&s[i+1]==='"'){cell+='"';i++;}else quoted=!quoted;}else if(c===','&&!quoted){row.push(cell);cell='';}else if((c==='\r'||c==='\n')&&!quoted){if(c==='\r'&&s[i+1]==='\n')i++;row.push(cell);out.push(row);row=[];cell='';}else cell+=c;}row.push(cell);out.push(row);return out.filter(r=>r.some(v=>String(v??'').trim()!==''));}
+function gvizToRows(table){const count=Math.max(13,table?.cols?.length??0,...(table?.rows??[]).map(r=>r.c?.length??0));return (table?.rows??[]).map(r=>Array.from({length:count},(_,i)=>{const c=r.c?.[i];return c==null?'':String(c.f??c.v??'');})).filter(r=>r.some(x=>x.trim()));}
+function loadJSONP(){return new Promise((resolve,reject)=>{const cb='__apricot_'+Date.now()+'_'+Math.random().toString(36).slice(2);const script=document.createElement('script');let done=false;const finish=(err,rows)=>{if(done)return;done=true;clearTimeout(timer);delete window[cb];script.remove();err?reject(err):resolve(rows)};const timer=setTimeout(()=>finish(new Error('讀取逾時')),15000);window[cb]=res=>res?.status==='error'?finish(new Error(res.errors?.[0]?.message||'Google Sheets 回傳錯誤')):finish(null,gvizToRows(res.table));script.src=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?gid=${SHEET_GID}&headers=0&tq=${encodeURIComponent('select *')}&tqx=${encodeURIComponent('out:json;responseHandler:'+cb)}&_=${Date.now()}`;script.onerror=()=>finish(new Error('JSONP 連線失敗'));document.body.appendChild(script);});}
+async function loadCSV(){let last;for(const url of [`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?gid=${SHEET_GID}&headers=0&tqx=out:csv`,`https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${SHEET_GID}`]){try{const res=await fetch(url+`&_=${Date.now()}`,{cache:'no-store'});if(!res.ok)throw Error('HTTP '+res.status);const rows=parseCSV(await res.text());if(rows.length)return rows;}catch(e){last=e;}}throw last||Error('CSV 載入失敗');}
+async function getRows(){try{const rows=await loadJSONP();if(rows.length)return rows;}catch(e){console.warn('Google Sheets JSONP fallback:',e);}return loadCSV();}
+function settingKey(v){return String(v??'').replace(/[\s：:]/g,'').trim();}
+function applySettings(rows){const settings={};for(const row of rows){const k=settingKey(row[11]);const v=String(row[12]??'').trim();if(k==='網站標題'&&v)settings.title=v;if(k==='網站小標題'&&v)settings.subtitle=v;const inline=String(row[11]??'').match(/^\s*(網站標題|網站小標題)\s*[：:]\s*(.+)$/);if(inline){if(inline[1]==='網站標題')settings.title=inline[2].trim();else settings.subtitle=inline[2].trim();}}
+ $('#siteTitle').textContent=settings.title||DEFAULT_TITLE;$('#siteSubtitle').textContent=settings.subtitle||DEFAULT_SUBTITLE;document.title=settings.title||DEFAULT_TITLE;}
+function toValue(v){const s=String(v??'').trim();if(!s)return '';const stripped=s.replace(/,/g,'');return /^[-+]?\d+(\.\d+)?$/.test(stripped)?Number(stripped):s;}
+function displayValue(v){return typeof v==='number'?formatter.format(v):String(v??'');}
+function loadData(rows){if(!rows.length)throw Error('沒有資料');applySettings(rows);const first=rows[0].slice(0,5).map(x=>String(x??'').trim());headers=first.length===5&&first.every(Boolean)?first:DEFAULT_HEADERS;records=rows.slice(1).filter(r=>String(r[0]??'').trim()).map(r=>r.slice(0,5).map((v,i)=>i===0?String(v??'').trim():toValue(v)));}
+function render(items){const head=$('#tableHead');head.replaceChildren(...headers.map(h=>{const th=document.createElement('th');th.textContent=h;return th;}));const body=$('#tableBody');body.replaceChildren();if(!items.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=5;td.className='empty';td.textContent='目前沒有符合條件的資料 ♡';tr.append(td);body.append(tr);return;}const fragment=document.createDocumentFragment();for(const row of items){const tr=document.createElement('tr');for(let i=0;i<5;i++){const td=document.createElement('td');td.textContent=displayValue(row[i]);tr.append(td);}fragment.append(tr);}body.append(fragment);}
+function filter(){const term=$('#searchInput').value.trim(),key=normalize(term);const selected=!key?records:records.filter(row=>normalize(row[0]).includes(key));render(selected);$('#resultText').textContent=term?`搜尋「${term}」：找到 ${selected.length} 筆資料。`:'';}
+async function init(){const input=$('#searchInput');input.addEventListener('input',filter);$('#clearBtn').addEventListener('click',()=>{input.value='';filter();input.focus();});try{const rows=await getRows();loadData(rows);render(records);$('#resultText').textContent='';}catch(e){console.error('Google 試算表載入失敗:',e);render([]);$('#resultText').textContent='資料載入失敗：請確認試算表已開放「知道連結的使用者 → 檢視者」、第一個分頁 gid=0 正確，且 A～E 欄有資料。';}}
+document.addEventListener('DOMContentLoaded',init);

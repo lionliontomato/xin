@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#fff4d8">
+  <meta name="description" content="杏子の存鑽與存歌｜收藏與查詢紀錄">
+  <title>杏子の存鑽與存歌</title>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+</head>
+<body>
+  <div class="bg-glow glow-one"></div>
+  <div class="bg-glow glow-two"></div>
+  <div class="bg-glow glow-three"></div>
+
+  <div class="floaties" aria-hidden="true">
+    <span>🌼</span><span>✧</span><span>♡</span><span>🌼</span><span>✦</span><span>🍃</span><span>✿</span><span>🌼</span><span>♡</span><span>✧</span><span>🌼</span><span>✦</span>
+  </div>
+
+  <main class="shell">
+    <section class="hero panel">
+      <div class="sparkles" aria-hidden="true">🌼 ✦ ✧ ♡ 🌼 ✧</div>
+      <div class="daisy-badge" aria-hidden="true">🌼</div>
+      <h1 id="siteTitle">杏子の存鑽與存歌</h1>
+      <p id="siteSubtitle" class="subtitle">甜甜收藏，每一筆都值得紀錄 ♡</p>
+
+      <div class="search-card">
+        <label for="searchInput">懶得找就來查查看</label>
+        <div class="search-row">
+          <input id="searchInput" type="search" placeholder="輸入名稱搜尋…" autocomplete="off">
+          <button id="clearBtn" type="button">顯示全部</button>
+        </div>
+        <p id="resultText" role="status" aria-live="polite">資料載入中…</p>
+      </div>
+    </section>
+
+    <section class="content panel" aria-label="資料表格">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr id="tableHead">
+              <th>存鑽老闆</th>
+              <th>存鑽數量</th>
+              <th>存歌數量</th>
+              <th>存爆數量</th>
+              <th>總數</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr><td colspan="5" class="empty">資料載入中…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>🌼 謝謝大家的支持 ｜ 願每一份喜歡都像花一樣綻放 ♡</p>
+    <p>© 2026 LionLionTomato. All Rights Reserved.</p>
+    <p>本網站「杏子の存鑽與存歌」之頁面設計、程式架構、資料整理方式與視覺呈現，未經授權不得重製、改作或商業使用。</p>
+    <a href="./copyright.html">著作權聲明與使用條款</a>
+  </footer>
+
+  <script src="./script.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+:root{
+  --ink:#6b5039;
+  --ink-soft:#92775b;
+  --gold:#d9a744;
+  --gold-deep:#b97d24;
+  --line:#efdfb9;
+  --panel:rgba(255,253,246,.84);
+  --panel-strong:rgba(255,252,242,.94);
+  --shadow:0 20px 58px rgba(166,123,49,.15);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;min-height:100vh;overflow-x:hidden;color:var(--ink);
+  font-family:'Noto Sans TC','Microsoft JhengHei',sans-serif;
+  background:linear-gradient(180deg,rgba(255,249,232,.40),rgba(255,245,218,.50)),url('./assets/gerbera-garden-v2.png') center center/cover no-repeat fixed;
+}
+.bg-glow{position:fixed;border-radius:50%;filter:blur(20px);pointer-events:none;z-index:0;opacity:.65}
+.glow-one{width:340px;height:340px;top:-110px;left:-70px;background:rgba(255,255,255,.85)}
+.glow-two{width:300px;height:300px;right:-85px;top:100px;background:rgba(255,224,144,.42)}
+.glow-three{width:330px;height:330px;left:50%;bottom:-150px;transform:translateX(-50%);background:rgba(255,237,188,.45)}
+.floaties{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.floaties span{position:absolute;bottom:-80px;opacity:0;color:#d5a442;text-shadow:0 5px 18px rgba(180,134,54,.18);animation:floatUp linear infinite;user-select:none}
+.floaties span:nth-child(1){left:4%;font-size:27px;animation-duration:20s;animation-delay:-3s}
+.floaties span:nth-child(2){left:12%;font-size:20px;animation-duration:17s;animation-delay:-12s}
+.floaties span:nth-child(3){left:19%;font-size:22px;animation-duration:19s;animation-delay:-8s}
+.floaties span:nth-child(4){left:28%;font-size:29px;animation-duration:23s;animation-delay:-14s}
+.floaties span:nth-child(5){left:38%;font-size:22px;animation-duration:18s;animation-delay:-5s}
+.floaties span:nth-child(6){left:47%;font-size:24px;animation-duration:24s;animation-delay:-16s}
+.floaties span:nth-child(7){left:58%;font-size:23px;animation-duration:20s;animation-delay:-10s}
+.floaties span:nth-child(8){left:69%;font-size:28px;animation-duration:21s;animation-delay:-18s}
+.floaties span:nth-child(9){left:79%;font-size:21px;animation-duration:18s;animation-delay:-7s}
+.floaties span:nth-child(10){left:87%;font-size:19px;animation-duration:16s;animation-delay:-11s}
+.floaties span:nth-child(11){left:93%;font-size:27px;animation-duration:22s;animation-delay:-15s}
+.floaties span:nth-child(12){left:97%;font-size:20px;animation-duration:19s;animation-delay:-4s}
+@keyframes floatUp{0%{transform:translate3d(0,0,0) rotate(0);opacity:0}10%{opacity:.35}50%{opacity:.48}100%{transform:translate3d(10px,-118vh,0) rotate(18deg);opacity:0}}
+.shell{width:min(1040px,calc(100% - 28px));margin:0 auto;padding:28px 0 22px;position:relative;z-index:1}
+.panel{background:var(--panel);border:1px solid rgba(255,255,255,.92);border-radius:30px;box-shadow:var(--shadow);backdrop-filter:blur(16px)}
+.hero{text-align:center;position:relative;overflow:hidden;padding:30px clamp(18px,5vw,54px) 36px}
+.hero::before{content:'';position:absolute;inset:14px;border:1.5px dashed #ead5a6;border-radius:24px;pointer-events:none}
+.sparkles{color:#c99c48;font-size:17px;letter-spacing:7px;margin-bottom:5px}
+.daisy-badge{width:78px;height:78px;margin:7px auto 12px;display:grid;place-items:center;border-radius:50%;font-size:55px;background:rgba(255,255,255,.65);box-shadow:0 8px 22px rgba(195,151,68,.16);animation:flowerBob 5s ease-in-out infinite}
+@keyframes flowerBob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-5px) rotate(4deg)}}
+h1{margin:0;color:#a66e2a;font-size:clamp(33px,5.8vw,64px);line-height:1.2;letter-spacing:.03em;font-weight:900;text-shadow:0 3px 18px rgba(255,231,171,.9)}
+.subtitle{margin:14px 0 0;color:var(--ink-soft);font-size:17px;line-height:1.7}
+.search-card{width:min(720px,100%);margin:27px auto 0;padding:18px;text-align:left;border-radius:22px;background:var(--panel-strong);border:1px solid rgba(255,255,255,.98);box-shadow:0 10px 30px rgba(173,130,51,.12)}
+.search-card label{display:block;margin:0 0 10px 4px;color:#926a35;font-weight:800}
+.search-row{display:grid;grid-template-columns:1fr auto;gap:10px}
+input[type="search"]{width:100%;min-width:0;padding:13px 16px;border-radius:16px;border:1px solid #e8d3a5;background:#fffef9;color:var(--ink);font:inherit;font-size:16px;outline:none}
+input[type="search"]:focus{border-color:#d7a846;box-shadow:0 0 0 4px rgba(218,177,89,.2)}
+button{border:0;border-radius:16px;padding:12px 22px;cursor:pointer;font:inherit;font-weight:800;color:#fffdf7;background:linear-gradient(135deg,#d7a13c,#efc96d);box-shadow:0 8px 22px rgba(183,131,37,.26)}
+button:hover{filter:brightness(1.04)}button:focus-visible,a:focus-visible{outline:3px solid #c99538;outline-offset:3px}
+#resultText{margin:10px 4px 0;min-height:18px;font-size:13px;color:#927d62}
+.content{margin-top:18px;padding:18px}
+.table-wrap{overflow-x:auto;border-radius:22px;border:1px solid var(--line);background:rgba(255,255,252,.84)}
+table{width:100%;min-width:680px;border-collapse:collapse}
+th,td{padding:15px 12px;text-align:center;border-bottom:1px solid #f0e5ce}
+th{font-size:15px;white-space:nowrap;color:#fffdf6}
+th:nth-child(1){background:#c69a48}th:nth-child(2){background:#d8ad57}th:nth-child(3){background:#e3bc70}th:nth-child(4){background:#d9a66f}th:nth-child(5){background:#c6ad75}
+td{font-size:16px;color:#6a553e}tbody tr:nth-child(even){background:rgba(255,247,225,.76)}tbody tr:hover{background:rgba(255,235,185,.58)}tbody td:first-child{font-weight:800;color:#94682f}
+.empty{padding:40px;color:#9a8669}
+.footer{max-width:900px;margin:16px auto 28px;padding:10px 18px;text-align:center;position:relative;z-index:1;color:#8b7355;font-size:13px;line-height:1.9}
+.footer p{margin:5px auto}.footer a{color:#93652d;text-decoration:underline;text-underline-offset:3px}
+.copyright-page{max-width:860px;margin:42px auto;padding:36px;position:relative;z-index:1;line-height:1.9;background:var(--panel)}
+.copyright-page .eyebrow{color:#b88739;letter-spacing:2px;font-size:12px;font-weight:800}
+.copyright-page h1{font-size:34px}.copyright-page h2{margin-top:22px;color:#986c32;font-size:20px}.copyright-page a{color:#93652d}
+@media(max-width:650px){.shell{width:calc(100% - 18px);padding-top:16px}.hero{padding:23px 16px 29px}.hero::before{inset:10px}.sparkles{letter-spacing:4px}.search-row{grid-template-columns:1fr}button{min-height:48px}.content{padding:12px}.footer{font-size:12px}.copyright-page{margin:16px 9px;padding:23px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
